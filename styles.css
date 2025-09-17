@@ -449,6 +449,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    padding: 0 2rem;
 }
 .serve-heading {
     font-size: 3rem;
@@ -461,11 +462,13 @@
 }
 .serve-cards {
     display: flex;
-    gap: 2.5rem;
+    gap: 1.5rem;
     overflow-x: auto;
     width: 100%;
     padding-bottom: 2rem;
     justify-content: center;
+    align-items: center;
+    transition: all 0.5s ease;
 }
 .serve-card {
     position: relative;
@@ -481,15 +484,46 @@
     box-shadow: 0 2px 16px rgba(0,0,0,0.08);
     overflow: hidden;
     cursor: pointer;
-    transition: max-width 0.5s cubic-bezier(.77,0,.18,1), width 0.5s cubic-bezier(.77,0,.18,1);
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+    transition: all 0.6s cubic-bezier(.77,0,.18,1);
+    opacity: 1;
+    transform: translateY(0);
+    z-index: 1;
 }
-.serve-card:hover,
-.serve-card:focus-within {
-    max-width: 520px;
-    width: 520px;
+
+.serve-card:hover {
+    max-width: 480px;
+    width: 480px;
+    z-index: 10;
+    transform: scale(1.02);
+}
+
+/* Smooth shifting for non-hovered cards */
+.serve-cards:has(.serve-card:nth-child(1):hover) .serve-card:nth-child(2),
+.serve-cards:has(.serve-card:nth-child(1):hover) .serve-card:nth-child(3),
+.serve-cards:has(.serve-card:nth-child(1):hover) .serve-card:nth-child(4) {
+    transform: translateX(100px);
+}
+
+.serve-cards:has(.serve-card:nth-child(2):hover) .serve-card:nth-child(1) {
+    transform: translateX(-100px);
+}
+.serve-cards:has(.serve-card:nth-child(2):hover) .serve-card:nth-child(3),
+.serve-cards:has(.serve-card:nth-child(2):hover) .serve-card:nth-child(4) {
+    transform: translateX(100px);
+}
+
+.serve-cards:has(.serve-card:nth-child(3):hover) .serve-card:nth-child(1),
+.serve-cards:has(.serve-card:nth-child(3):hover) .serve-card:nth-child(2) {
+    transform: translateX(-100px);
+}
+.serve-cards:has(.serve-card:nth-child(3):hover) .serve-card:nth-child(4) {
+    transform: translateX(100px);
+}
+
+.serve-cards:has(.serve-card:nth-child(4):hover) .serve-card:nth-child(1),
+.serve-cards:has(.serve-card:nth-child(4):hover) .serve-card:nth-child(2),
+.serve-cards:has(.serve-card:nth-child(4):hover) .serve-card:nth-child(3) {
+    transform: translateX(-100px);
 }
 .serve-card-inner {
     display: flex;
@@ -500,29 +534,29 @@
     width: 250px;
     height: 100%;
     object-fit: cover;
-    border-radius: 1.2rem 0 0 1.2rem;
+    border-radius: calc(1.5rem - 6px);
     display: block;
-    transition: filter 0.3s, transform 0.5s cubic-bezier(.77,0,.18,1);
+    transition: filter 0.3s, transform 0.6s cubic-bezier(.77,0,.18,1);
     z-index: 1;
 }
 .serve-card:hover img,
 .serve-card:focus-within img {
-    filter: brightness(0.7);
-    transform: scale(1.07);
+    filter: brightness(0.6);
+    transform: scale(1.05);
 }
 .serve-card-overlay {
     width: 0;
     height: 100%;
     background: #0C4A92;
     color: #fff;
-    border-radius: 0 1.2rem 1.2rem 0;
+    border-radius: 0 calc(1.5rem - 6px) calc(1.5rem - 6px) 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     padding: 2.5rem 2rem;
     opacity: 0;
-    transition: width 0.5s cubic-bezier(.77,0,.18,1), opacity 0.3s;
+    transition: width 0.6s cubic-bezier(.77,0,.18,1), opacity 0.4s ease-in;
     box-sizing: border-box;
     pointer-events: none;
     overflow: hidden;
@@ -530,7 +564,7 @@
 }
 .serve-card:hover .serve-card-overlay,
 .serve-card:focus-within .serve-card-overlay {
-    width: 270px;
+    width: 230px;
     opacity: 1;
     pointer-events: auto;
 }
@@ -565,56 +599,105 @@
     background: #0C4A92;
     color: #fff;
 }
+
+/* Card entrance animation */
+.serve-card:nth-child(1) {
+    animation: slideInUp 0.6s ease-out 0.1s both;
+}
+
+.serve-card:nth-child(2) {
+    animation: slideInUp 0.6s ease-out 0.2s both;
+}
+
+.serve-card:nth-child(3) {
+    animation: slideInUp 0.6s ease-out 0.3s both;
+}
+
+.serve-card:nth-child(4) {
+    animation: slideInUp 0.6s ease-out 0.4s both;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 @media (max-width: 900px) {
     .serve-card {
-        min-width: 140px;
-        max-width: 140px;
-        width: 140px;
-        height: 220px;
-    }
-    .serve-card:hover,
-    .serve-card:focus-within {
-        max-width: 320px;
-        width: 320px;
-    }
-    .serve-card img {
-        width: 140px;
-    }
-    .serve-card-overlay {
-        padding: 1rem 0.5rem;
-    }
-    .serve-card-overlay h4 {
-        font-size: 1.2rem;
-    }
-    .serve-card-overlay p {
-        font-size: 0.9rem;
-    }
-}
-@media (max-width: 600px) {
-    .serve-card {
-        min-width: 90px;
-        max-width: 90px;
-        width: 90px;
-        height: 100px;
-    }
-    .serve-card:hover,
-    .serve-card:focus-within {
+        min-width: 180px;
         max-width: 180px;
         width: 180px;
+        height: 280px;
+    }
+    .serve-card:hover {
+        max-width: 380px;
+        width: 380px;
     }
     .serve-card img {
-        width: 90px;
+        width: 180px;
+        border-radius: calc(1.2rem - 4px);
     }
     .serve-card-overlay {
-        padding: 0.5rem 0.2rem;
+        border-radius: 0 calc(1.2rem - 4px) calc(1.2rem - 4px) 0;
+        padding: 1.5rem;
     }
-    .serve-card-overlay h4 {
-        font-size: 1rem;
+    .serve-card:hover .serve-card-overlay {
+        width: 200px;
     }
-    .serve-card-overlay p {
-        font-size: 0.7rem;
+    .serve-cards {
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+    /* Adjust shifting for mobile */
+    .serve-cards:has(.serve-card:hover) .serve-card:not(:hover) {
+        transform: translateX(0) scale(0.9);
+        opacity: 0.7;
     }
 }
+
+@media (max-width: 600px) {
+    .serve-card {
+        min-width: 120px;
+        max-width: 120px;
+        width: 120px;
+        height: 200px;
+    }
+    .serve-card:hover {
+        max-width: 300px;
+        width: 300px;
+    }
+    .serve-card img {
+        width: 120px;
+    }
+    .serve-card-overlay {
+        padding: 1rem;
+    }
+    .serve-card:hover .serve-card-overlay {
+        width: 180px;
+    }
+    .serve-card-overlay h4 {
+        font-size: 1.4rem;
+    }
+    .serve-card-overlay p {
+        font-size: 1rem;
+    }
+    .serve-cards {
+        gap: 0.5rem;
+        overflow-x: scroll;
+        justify-content: flex-start;
+    }
+    /* Disable complex shifting on mobile */
+    .serve-cards:has(.serve-card:hover) .serve-card:not(:hover) {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+}
+
 /* Why We Exist Section */
 .why-section {
     background: var(--white);
